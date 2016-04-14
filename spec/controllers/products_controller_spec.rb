@@ -32,7 +32,7 @@ RSpec.describe ProductsController, type: :controller do
         expect(count_after).to eq(count_before + 1)
       end
 
-      it "redirects to the show page" do
+      it "redirects to the show template" do
         valid_request
         expect(response).to redirect_to(product_path(Product.last))
       end
@@ -57,7 +57,7 @@ RSpec.describe ProductsController, type: :controller do
         expect(count_after).to eq(count_before)
       end
 
-      it "redirects to the new page" do
+      it "redirects to the new template" do
         invalid_request
         expect(response).to render_template :new
       end
@@ -69,6 +69,55 @@ RSpec.describe ProductsController, type: :controller do
 
     end
 
+  end
+
+  describe "#destroy" do
+    it "removes a record from the database" do
+      product
+      count_before = Product.count
+      delete :destroy, id: product.id
+      count_after = Product.count
+
+      expect(count_after).to eq(count_before - 1)
+    end
+
+    it "redirects to the index template" do
+      delete :destroy, id: product.id
+      expect(response).to redirect_to(products_path)
+    end
+
+    it "sets a flash message" do
+      delete :destroy, id: product.id
+      expect(flash[:notice]).to be
+    end
+  end
+
+  describe "#show" do
+
+    before { get :show, id: product.id }
+
+    it "renders the show template" do
+      expect(response).to render_template(:show)
+    end
+
+    it "assigns a Product to an instance variable" do
+      expect(assigns(:product)).to eq(product)
+    end
+  end
+
+  describe "#index" do
+    it "renders the index template" do
+      get :index
+      expect(response).to render_template(:index)
+    end
+
+    it "assigns all Products to an instance variable" do
+      a = FactoryGirl.create(:product)
+      b = FactoryGirl.create(:product)
+
+      get :index
+      expect(assigns(:products)).to eq([a, b])
+    end
   end
 
 end

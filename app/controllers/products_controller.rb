@@ -22,8 +22,6 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find params[:id]
-
-    render :show
   end
 
   def edit
@@ -45,6 +43,7 @@ class ProductsController < ApplicationController
     @product = Product.find params[:id]
     @product.destroy
 
+    flash[:notice] = "Product deleted."
     redirect_to products_path
   end
 
