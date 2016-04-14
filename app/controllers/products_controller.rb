@@ -15,6 +15,7 @@ class ProductsController < ApplicationController
     if @product.save
       redirect_to product_path(@product), notice: "Product created."
     else
+      flash[:alert] = "Invalid params. Product was not created."
       render :new
     end
   end

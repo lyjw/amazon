@@ -32,7 +32,7 @@ RSpec.describe ProductsController, type: :controller do
         expect(count_after).to eq(count_before + 1)
       end
 
-      it "redirects to the show template" do
+      it "redirects to the show page" do
         valid_request
         expect(response).to redirect_to(product_path(Product.last))
       end
@@ -41,10 +41,33 @@ RSpec.describe ProductsController, type: :controller do
         valid_request
         expect(flash[:notice]).to be
       end
-
     end
 
-    context "given invalid parameters"
+    context "given invalid parameters" do
+
+      def invalid_request
+        post :create, product: {description: ""}
+      end
+
+      it "does not add a record to the Product database" do
+        count_before = Product.count
+        invalid_request
+        count_after = Product.count
+
+        expect(count_after).to eq(count_before)
+      end
+
+      it "redirects to the new page" do
+        invalid_request
+        expect(response).to render_template :new
+      end
+
+      it "sets a flash message" do
+        invalid_request
+        expect(flash[:alert]).to be
+      end
+
+    end
 
   end
 
