@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  has_many :reviews, dependent: :destroy
 
   before_validation :set_default_sale_price_to_price
 

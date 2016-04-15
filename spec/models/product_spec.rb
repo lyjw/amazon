@@ -23,9 +23,8 @@ RSpec.describe Product, type: :model do
 
     it "must have a sale price or set sale price to price if no sale price is given" do
       a = Product.create(title: "Hello", description: "abcdefghijkl", price: 10)
-      # -> Set Default
       a.valid?
-      # -> No errors
+
       expect(a.errors).not_to have_key(:sale_price)
       expect(a.sale_price).to eq(10)
     end

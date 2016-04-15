@@ -5,12 +5,21 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
 </head>
 <body>
-  <%= link_to "Home", products_path %> |
-  <%= link_to "New Product", new_product_path %>
 
-<%= yield %>
+  <div class="container">
+    <%= link_to "Home", products_path %> |
+    <%= link_to "New Product", new_product_path %>
+
+    <hr>
+      <%= notice || alert %>
+    <hr>
+
+    <%= yield %>
+
+  </div>
 
 </body>
 </html>

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :products
+  resources :products do
+    resources :reviews
+  end
+
   # get '/products' => 'products#index', as: :products
   # get '/products/new' => 'products#new', as: :new_product
   # post '/products'    => 'products#create'
