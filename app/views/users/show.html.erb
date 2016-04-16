@@ -1,0 +1,73 @@
+<h1>Hello, <%= current_user.first_name %></h1>
+
+<h3>Products (<%= @products.count %>)</h3>
+
+<table class = "table table-striped">
+
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Product Name</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Sale Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @products.each_with_index do |product, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= link_to product.title, product_path(product) %></td>
+        <td><%= product.category_name %></td>
+        <td><%= product.price %></td>
+        <td>
+          <%= product.on_sale? ? product.sale_price : "N/A" %>
+        </td>
+        <td>
+          <%= link_to edit_product_path(product) do %>
+            <span class="glyphicon glyphicon-edit"></span>
+          <% end %>
+
+          <%= link_to product_path(product), method: :delete do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<h3>Reviews (<%= @reviews.count %>)</h3>
+
+<% if @reviews %>
+
+  <table class="table table-striped">
+    <thead>
+      <th>Product</th>
+      <th>Rating</th>
+      <th>Review</th>
+      <th>Actions</th>
+    </thead>
+
+    <tbody>
+      <% @reviews.each do |review| %>
+        <tr>
+          <td><%= review.product_name  %></td>
+          <td><%= review.show_stars(review.stars).html_safe %></td>
+          <td><%= review.body %></td>
+          <td>
+            <%= link_to product_review_path(review.product_id, review), method: :delete do %>
+              <span class="glyphicon glyphicon-trash"></span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  "No Reviews"
+<% end %>

@@ -1,4 +1,16 @@
-<h1><%= @product.title %></h1>
+<p class="category">
+  <%= @product.category_name %>
+</p>
+
+
+<div class="product-header">
+  <h1 class="product-heading"><%= @product.title %></h1>
+  <% if @product.on_sale? %>
+    <div class="sale-tag">SALE</div>
+  <% end %>
+</div>
+
+<div class="creator">Created by: <%= @product.user_full_name.titleize %></div>
 
 <p>
   <b>Description:</b><br>
@@ -10,12 +22,17 @@
   $<%= sprintf("%0.02f", @product.price) %>
 </p>
 
-<%= link_to "Edit Product", edit_product_path(@product) %> |
-<%= link_to "Delete Product", product_path(@product), method: :delete, data: {confirm: "Are you sure you want to delete: #{@product.title}?"} %>
+<p>
+  <b>Sale Price:</b><br/>
+  $<%= sprintf("%0.02f", @product.sale_price) %>
+</p>
+
+<% if belongs_to_current_user?(@product) %>
+  <%= link_to "Edit Product", edit_product_path(@product) %> |
+  <%= link_to "Delete Product", product_path(@product), method: :delete, data: {confirm: "Are you sure you want to delete: #{@product.title}?"} %>
+<% end %>
 
 <hr>
-
-
 
     <div class="review-display">
       <% if @product.reviews %>
@@ -24,16 +41,20 @@
           There are no reviews.
         <% else %>
           <% @product.reviews.each do |review| %>
-            <%= review.stars %> stars - <%= review.body %> <br><small>(Created on: <%= review.created_at.strftime("%F") %>)</small>
-            <%= link_to "Delete", product_review_path(@product, review),
+
+            <%= review.show_stars(review.stars).html_safe %> - <%= review.body %> <br><small>Created by: <%= review.user_full_name.titleize %> | Created on: <%= review.created_at.strftime("%F") %></small><br>
+
+            <% if belongs_to_current_user?(review) %>
+              <%= link_to "Delete", product_review_path(@product, review),
                                   data: { confirm: "Are you sure?" },
                                   method: :delete %>
+            <% end %>
+
             <hr>
           <% end %>
         <% end %>
       <% end %>
     </div>
-
 
 <hr>
 
@@ -47,8 +68,9 @@
 
       <%= form_for [@product, @review] do |f| %>
         <div class="col-md-4">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
           <%= f.label "Rating" %>
-          <input id="review_stars" class="rating rating-sm" data-min="0" data-max="5" data-step="0.5" data-size="xs" data-show-caption="false" data-show-clear="false" name="review[stars]">
+          <input id="review_stars" class="rating rating-sm" data-min="0" data-max="5" data-step="1" data-size="xs" data-show-caption="false" data-show-clear="false" name="review[stars]">
         </div>
 
         <div class="col-md-5">
@@ -56,7 +78,7 @@
             <%= f.label "Message" %>
             <%= f.text_area :body %>
           </div>
-          
+
           <div>
             <%= f.submit %>
           </div>

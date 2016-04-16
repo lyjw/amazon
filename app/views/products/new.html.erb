@@ -19,6 +19,11 @@
     <%= f.text_field :price %>
   </div>
 
+  <div>
+    <%= f.label :category %>
+    <%= f.collection_select :category_id, Category.order(:name), :id, :name %>
+  </div>
+
   <%= f.submit %>
 
 <% end %>

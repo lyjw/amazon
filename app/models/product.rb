@@ -1,5 +1,7 @@
 class Product < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
+  belongs_to :category
+  belongs_to :user
 
   before_validation :set_default_sale_price_to_price
 
@@ -15,6 +17,18 @@ class Product < ActiveRecord::Base
 
   def on_sale?
     sale_price < price
+  end
+
+  # def belongs_to_current_user?
+  #   user == current_user
+  # end
+
+  def user_full_name
+    user ? user.full_name : "Anonymous"
+  end
+
+  def category_name
+    category_id ? Category.find(category_id).name : ""
   end
 
   private

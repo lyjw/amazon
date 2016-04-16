@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   resources :products do
     resources :reviews
   end
-
   # get '/products' => 'products#index', as: :products
   # get '/products/new' => 'products#new', as: :new_product
   # post '/products'    => 'products#create'
@@ -11,6 +10,14 @@ Rails.application.routes.draw do
   # get '/products/:id/edit' => 'products#edit', as: :edit_product
   # patch '/products/:id' => 'products#update'
   # delete '/products/:id' => 'products#destroy', as: :delete_product
+
+  resources :users, only: [:new, :create, :show]
+
+  resources :sessions, only: [:new, :create] do
+    # Generates a destroy route without :id or :user_id
+    # It is better to hide the user_id where possible for security reasons.
+    delete :destroy, on: :collection
+  end
 
   root 'products#index'
 
