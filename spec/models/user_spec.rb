@@ -1,10 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+
+  def attributes_user(new_attributes = {})
+    { first_name: "John", last_name: "Smith", email: "john@smith.com", password: "secret" }.merge(new_attributes)
+  end
+
   describe "validations" do
 
     it "requires a first name" do
-      u = User.new FactoryGirl.attributes_for(:user, first_name: nil)
+      u = User.new attributes_user(first_name: nil)
+      # u = User.new FactoryGirl.attributes_for(:user, first_name: nil)
       expect(u).to be_invalid
     end
 
@@ -13,9 +19,10 @@ RSpec.describe User, type: :model do
       expect(u).to be_invalid
     end
 
-    it "requires an email" do
-      u = User.new FactoryGirl.attributes_for(:user, email: nil)
-      expect(u).to be_invalid
+    it "requires email to be unique" do
+      u = FactoryGirl.create(:user, email: "test@email.com")
+      u2 = User.new FactoryGirl.attributes_for(:user, email: u.email)
+      expect(u2).to be_invalid
     end
   end
 

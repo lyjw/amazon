@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   has_many :products, dependent: :nullify
   has_many :reviews, dependent: :nullify
 
+  has_many :favourites, dependent: :destroy
+  has_many :favourite_products, through: :favourites, source: :product
+
   has_secure_password
 
   validates :first_name, presence: true

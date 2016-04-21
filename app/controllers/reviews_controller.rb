@@ -12,7 +12,7 @@ class ReviewsController < ApplicationController
       redirect_to product_path(@product), notice: "Product created."
     else
       flash[:alert] = "Product not created."
-      render "/products/show"
+      render "products/show"
     end
   end
 

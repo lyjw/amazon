@@ -19,5 +19,7 @@ class UsersController < ApplicationController
   def show
     @products = Product.where(['user_id = ?', current_user.id])
     @reviews = Review.where(['user_id = ?', current_user.id])
+    @favourites = Favourite.where(['user_id = ?', current_user.id])
   end
+
 end

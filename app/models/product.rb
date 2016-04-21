@@ -3,6 +3,9 @@ class Product < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
 
+  has_many :favourites, dependent: :destroy
+  has_many :users, through: :favourites
+
   before_validation :set_default_sale_price_to_price
 
   validates :title, presence: true, uniqueness: {message: "already exists"}
@@ -31,6 +34,10 @@ class Product < ActiveRecord::Base
     category_id ? Category.find(category_id).name : ""
   end
 
+  def favourite_of(user)
+    favourites.find_by_user_id(user.id) if user
+  end
+
   private
 
   # def set_defaults
@@ -40,5 +47,4 @@ class Product < ActiveRecord::Base
   def set_default_sale_price_to_price
     self.sale_price ||= price
   end
-
 end

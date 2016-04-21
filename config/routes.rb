@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :products do
     resources :reviews
+    resources :favourites, only: [:create, :destroy]
   end
   # get '/products' => 'products#index', as: :products
   # get '/products/new' => 'products#new', as: :new_product
@@ -18,6 +19,8 @@ Rails.application.routes.draw do
     # It is better to hide the user_id where possible for security reasons.
     delete :destroy, on: :collection
   end
+
+  resources :favourites, only: :index
 
   root 'products#index'
 

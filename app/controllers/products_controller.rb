@@ -26,6 +26,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    @favourite = Favourite.new
     @review = Review.new
   end
 
@@ -56,5 +57,11 @@ class ProductsController < ApplicationController
   def product_params
     product_params = params.require(:product).permit(:title, :description, :price, :sale_price, :category_id)
   end
+
+  def user_favourite
+    # Returns a Favourite object
+    @user_favourite ||= @product.favourite_of(current_user)
+  end
+  helper_method :user_favourite
 
 end

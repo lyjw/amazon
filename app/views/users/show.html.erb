@@ -71,3 +71,33 @@
 <% else %>
   "No Reviews"
 <% end %>
+
+<h3>Favourites (<%= @favourites.count %>)</h3>
+
+<% if @favourites %>
+
+  <table class="table table-striped">
+    <thead>
+      <th>Product</th>
+      <th>Category</th>
+      <th>Actions</th>
+    </thead>
+
+    <tbody>
+      <% @favourites.each do |favourite| %>
+        <tr>
+          <td><%= favourite.product.title  %></td>
+          <td><%= favourite.product.category_name  %></td>
+          <td>
+            <%= link_to product_favourite_path(favourite.product_id, favourite), method: :delete do %>
+              <span class="glyphicon glyphicon-trash"></span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  "No Favourites"
+<% end %>

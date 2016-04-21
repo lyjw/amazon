@@ -19,6 +19,8 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'bootstrap-sass'
 
+gem 'font-awesome-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -28,6 +30,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+
+
 
 # Use Unicorn as the app server
 # gem 'unicorn'

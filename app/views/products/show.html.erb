@@ -13,6 +13,10 @@
 <div class="creator">Created by: <%= @product.user_full_name.titleize %></div>
 
 <p>
+  <b>Favourited:</b> <%= @product.favourites.count %> time(s)
+</p>
+
+<p>
   <b>Description:</b><br>
   <%= @product.description %>
 </p>
@@ -29,7 +33,13 @@
 
 <% if belongs_to_current_user?(@product) %>
   <%= link_to "Edit Product", edit_product_path(@product) %> |
-  <%= link_to "Delete Product", product_path(@product), method: :delete, data: {confirm: "Are you sure you want to delete: #{@product.title}?"} %>
+  <%= link_to "Delete Product", product_path(@product), method: :delete, data: {confirm: "Are you sure you want to delete: #{@product.title}?"} %> |
+<% end %>
+
+<% if user_favourite %>
+  <%= link_to "Remove from Favourites", product_favourite_path(@product, user_favourite), method: :delete  %>
+<% else %>
+  <%= link_to "Add to Favourites", product_favourites_path(@product), method: :post  %>
 <% end %>
 
 <hr>
@@ -58,33 +68,29 @@
 
 <hr>
 
-  <div class="row">
-
     <div class="review-form">
-      <div class="col-md-3">
-        <h4>Write a Review</h4>
+      <h4>Write a Review</h4>
+
       <%= @review.errors.full_messages.join(", ") %>
-      </div>
 
       <%= form_for [@product, @review] do |f| %>
-        <div class="col-md-4">
-          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-          <%= f.label "Rating" %>
-          <input id="review_stars" class="rating rating-sm" data-min="0" data-max="5" data-step="1" data-size="xs" data-show-caption="false" data-show-clear="false" name="review[stars]">
+
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        <%= f.label "Rating" %>
+
+        <input id="review_stars" class="rating rating-sm" data-min="0" data-max="5" data-step="1" data-size="xs" data-show-caption="false" data-show-clear="false" name="review[stars]">
+
+        <div>
+          <%= f.label "Message" %>
+          <%= f.text_area :body %>
         </div>
 
-        <div class="col-md-5">
-          <div>
-            <%= f.label "Message" %>
-            <%= f.text_area :body %>
-          </div>
-
-          <div>
-            <%= f.submit %>
-          </div>
-      </div>
+        <div>
+          <%= f.submit %>
+        </div>
 
       <% end %>
+
     </div>
 
   </div>
