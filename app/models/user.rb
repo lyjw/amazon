@@ -5,6 +5,11 @@ class User < ActiveRecord::Base
   has_many :favourites, dependent: :destroy
   has_many :favourite_products, through: :favourites, source: :product
 
+  has_many :likes, dependent: :destroy
+  has_many :liked_reviews, through: :reviews, source: :review
+  has_many :dislike, dependent: :destroy
+  has_many :disliked_reviews, through: :reviews, source: :review
+
   has_secure_password
 
   validates :first_name, presence: true

@@ -2,6 +2,10 @@
   <%= @product.category_name %>
 </p>
 
+<div id="favourite">
+  <%= render "/favourites/favourite", product: @product %>
+</div>
+
 
 <div class="product-header">
   <h1 class="product-heading"><%= @product.title %></h1>
@@ -36,61 +40,29 @@
   <%= link_to "Delete Product", product_path(@product), method: :delete, data: {confirm: "Are you sure you want to delete: #{@product.title}?"} %> |
 <% end %>
 
-<% if user_favourite %>
-  <%= link_to "Remove from Favourites", product_favourite_path(@product, user_favourite), method: :delete  %>
-<% else %>
-  <%= link_to "Add to Favourites", product_favourites_path(@product), method: :post  %>
-<% end %>
-
 <hr>
 
-    <div class="review-display">
-      <% if @product.reviews %>
-        <h3>Reviews</h3>
-        <% if @product.reviews.empty? %>
-          There are no reviews.
-        <% else %>
+  <% if @product.reviews %>
+    <h3>Reviews</h3>
+
+      <% if @product.reviews.empty? %>
+        There are no reviews.
+      <% else %>
+        <div id="review-list">
           <% @product.reviews.each do |review| %>
-
-            <%= review.show_stars(review.stars).html_safe %> - <%= review.body %> <br><small>Created by: <%= review.user_full_name.titleize %> | Created on: <%= review.created_at.strftime("%F") %></small><br>
-
-            <% if belongs_to_current_user?(review) %>
-              <%= link_to "Delete", product_review_path(@product, review),
-                                  data: { confirm: "Are you sure?" },
-                                  method: :delete %>
-            <% end %>
-
-            <hr>
+            <%= render "/reviews/review", review: review %>
           <% end %>
-        <% end %>
+        </div>
       <% end %>
-    </div>
+
+  <% end %>
 
 <hr>
 
-    <div class="review-form">
-      <h4>Write a Review</h4>
+    <h4>Write a Review</h4>
 
-      <%= @review.errors.full_messages.join(", ") %>
-
-      <%= form_for [@product, @review] do |f| %>
-
-        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        <%= f.label "Rating" %>
-
-        <input id="review_stars" class="rating rating-sm" data-min="0" data-max="5" data-step="1" data-size="xs" data-show-caption="false" data-show-clear="false" name="review[stars]">
-
-        <div>
-          <%= f.label "Message" %>
-          <%= f.text_area :body %>
-        </div>
-
-        <div>
-          <%= f.submit %>
-        </div>
-
-      <% end %>
-
+    <div id="review-form">
+      <%= render "/reviews/form", review: @review %>
     </div>
 
-  </div>
+</div>

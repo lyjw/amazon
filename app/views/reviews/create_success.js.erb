@@ -1,0 +1,10 @@
+$("#review-list").prepend("<%= j render 'review', review: @review, style: 'display: none' %>")
+
+$("#review-form").html("<%= j render 'form', review: Review.new %>");
+
+$("#<%= dom_id(@review) %>").slideDown(2000);
+
+var $input = $('input.rating');
+if ($input.length) {
+    $input.removeClass('rating-loading').addClass('rating-loading').rating();
+}

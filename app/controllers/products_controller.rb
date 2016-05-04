@@ -58,10 +58,4 @@ class ProductsController < ApplicationController
     product_params = params.require(:product).permit(:title, :description, :price, :sale_price, :category_id)
   end
 
-  def user_favourite
-    # Returns a Favourite object
-    @user_favourite ||= @product.favourite_of(current_user)
-  end
-  helper_method :user_favourite
-
 end

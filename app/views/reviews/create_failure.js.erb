@@ -1,0 +1,6 @@
+$("#review-form").html("<%= j render 'form', review: @review %>");
+
+var $input = $('input.rating');
+if ($input.length) {
+    $input.removeClass('rating-loading').addClass('rating-loading').rating();
+}

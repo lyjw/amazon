@@ -1,0 +1,26 @@
+<div id="<%= dom_id(review) %>" style="<%= style if defined?(style) %>">
+
+  <%= review.show_stars(review.stars).html_safe %> - <%= review.body %><br>
+
+  <small>Created by: <%= review.user_full_name.titleize %> |
+    Created on: <%= review.created_at.strftime("%F") %> |
+    Likes: <span class="review-like-count"><%= review.likes.count %></span>
+
+  </small><br>
+
+  <% if belongs_to_current_user?(review) %>
+    <%= link_to "Delete", product_review_path(@product, review),
+                        data: { confirm: "Are you sure?" },
+                        method: :delete,
+                        remote: true %>
+  <% else %>
+
+    <div id="review-like">
+      <%= render "/likes/like", review: review %>
+    </div>
+
+  <% end %>
+
+<hr>
+
+</div>

@@ -1,0 +1,2 @@
+$("#review-like").html("<%= j render 'like', review: @review %>");
+$(".review-like-count").html("<%= @review.likes.count %>");

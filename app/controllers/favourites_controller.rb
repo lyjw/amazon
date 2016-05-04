@@ -1,21 +1,30 @@
 class FavouritesController < ApplicationController
   before_action :authenticate_user!
+  before_action :product
 
   def create
     favourite = Favourite.new
     favourite.product = product
     favourite.user = current_user
 
-    if favourite.save
-      redirect_to product, notice: "Favourited!"
-    else
-      redirect_to product, notice: "Not added to Favourite."
+    respond_to do |format|
+      if favourite.save
+        format.html { redirect_to product, notice: "Favourited!" }
+        format.js   { render :create_success }
+      else
+        format.html { redirect_to product, notice: "Not added to Favourite." }
+        format.js   { render :create_failure }
+      end
     end
   end
 
   def destroy
     favourite.destroy
-    redirect_to product, notice: "Removed from Favourites."
+
+    respond_to do |format|
+      format.html { redirect_to product, notice: "Removed from Favourites." }
+      format.js   { render }
+    end
   end
 
   private

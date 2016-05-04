@@ -2,6 +2,9 @@ class Review < ActiveRecord::Base
   belongs_to :product
   belongs_to :user
 
+  has_many :likes, dependent: :destroy
+  has_many :users, through: :likes
+
   validates :stars, presence: true, inclusion: { in:(1..5), message: "count must be between 1 - 5."}
   # numericality: { less_than_or_equal_to: 5, greater_than_or_equal_to: 1 }
 
@@ -21,6 +24,10 @@ class Review < ActiveRecord::Base
                       5 => "&#9733;&#9733;&#9733;&#9733;&#9733;"}
 
     star_displays[count.round]
+  end
+
+  def liked_by(user)
+    likes.find_by_user_id user if user
   end
 
 end

@@ -1,0 +1,19 @@
+<%= review.errors.full_messages.join(", ") %>
+
+<%= form_for [@product, review], remote: true do |f| %>
+
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+  <%= f.label "Rating" %>
+
+  <input id="review_stars" class="rating rating-sm" data-min="0" data-max="5" data-step="1" data-size="xs" data-show-caption="false" data-show-clear="false" name="review[stars]">
+
+  <div>
+    <%= f.label "Message" %>
+    <%= f.text_area :body %>
+  </div>
+
+  <div>
+    <%= f.submit data: { disable_with: "Submitting..." } %>
+  </div>
+
+<% end %>
