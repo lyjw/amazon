@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_product, only: [:create, :destroy]
+  before_action :find_product, only: [:create, :destroy, :index]
 
   def create
     review_params = params.require(:review).permit([:stars, :body])
@@ -27,6 +27,14 @@ class ReviewsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to product_path(@product), notice: "Review deleted." }
       format.js { render }
+    end
+  end
+
+  def index
+    @reviews = @product.reviews.all
+
+    respond_to do |format|
+      format.json { render json: @reviews }
     end
   end
 

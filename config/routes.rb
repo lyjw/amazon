@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
 
   resources :products do
-    resources :reviews, only: [:create, :destroy]
+    resources :reviews, only: [:create, :destroy, :index] do
+      resources :likes, only: [:create, :destroy]
+    end
     resources :favourites, only: [:create, :destroy]
-  end
-
-  resources :reviews, only: [] do
-    resources :likes, only: [:create, :destroy]
   end
 
   # get '/products' => 'products#index', as: :products

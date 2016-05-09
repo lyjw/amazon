@@ -4,6 +4,11 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
+
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @products.select(:id, :title) }
+    end
   end
 
   def new
@@ -28,6 +33,11 @@ class ProductsController < ApplicationController
   def show
     @favourite = Favourite.new
     @review = Review.new
+
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @product.to_json(include: :reviews) }
+    end
   end
 
   def edit

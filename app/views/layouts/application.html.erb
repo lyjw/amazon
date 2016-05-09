@@ -17,7 +17,7 @@
 
     <div class="user-needs">
       <% if current_user %>
-        Hello, <%= current_user.first_name %> |
+        Hello, <%= current_user.full_name %> |
         <%= link_to "Profile", user_path(current_user) %> |
         <%= link_to "Log Out", sessions_path, method: :delete,
                                data: { confirm: "Are you sure you want to log out?" } %>
